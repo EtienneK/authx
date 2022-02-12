@@ -7,9 +7,6 @@ import {
   Heading,
   Input,
   Container,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
   Alert,
   AlertIcon,
   AlertTitle,
@@ -21,7 +18,6 @@ import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import fetch from 'cross-fetch'
 import { User, userSchema } from '../../../schemas/db'
-import Link from 'next/link'
 import AdminLayout from '../../../components/layouts/AdminLayout'
 import { useState } from 'react'
 
@@ -72,21 +68,11 @@ const UsersCreate: NextPage = () => {
   }
 
   return (
-    <AdminLayout>
-
-      <Breadcrumb>
-        <BreadcrumbItem>
-          <Link passHref href='/admin/users'>
-            <BreadcrumbLink>Users</BreadcrumbLink>
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem isCurrentPage>
-          <Link passHref href='/admin/users/create'>
-            <BreadcrumbLink>Create new user</BreadcrumbLink>
-          </Link>
-        </BreadcrumbItem>
-      </Breadcrumb>
-
+    <AdminLayout breadcrumbs={[
+      { href: '/admin/users', label: 'Users' },
+      { href: '/admin/users/create', label: 'Create new user' }
+    ]}
+    >
       <Alert status='error' mt={5} mb={5} hidden={!showUnknownError}>
         <AlertIcon />
         <AlertTitle mr={2}>An unknown error has occured.</AlertTitle>
@@ -123,7 +109,7 @@ const UsersCreate: NextPage = () => {
             </FormErrorMessage>
           </FormControl>
 
-          <Button mt={4} colorScheme='teal' isLoading={isSubmitting} type='submit'>
+          <Button mt={4} isLoading={isSubmitting} type='submit'>
             Create
           </Button>
 

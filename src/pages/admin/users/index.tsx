@@ -78,7 +78,7 @@ const DataFetchDisplay = (
 
 const UsersList: NextPage = () => {
   return (
-    <AdminLayout>
+    <AdminLayout breadcrumbs={[]}>
       <NextLink href='/admin/users/create'>
         <Button leftIcon={<FiPlusCircle />} float='right'>
           Create new user

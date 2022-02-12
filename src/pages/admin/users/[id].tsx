@@ -1,6 +1,5 @@
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Code, Container, Heading } from '@chakra-ui/react'
+import { Code, Container, Heading } from '@chakra-ui/react'
 import { NextPage } from 'next'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import Error from '../../../components/Error'
@@ -21,19 +20,11 @@ const UserView: NextPage = () => {
   if (data == null) return <>Loading...</>
 
   return (
-    <AdminLayout>
-      <Breadcrumb>
-        <BreadcrumbItem>
-          <Link passHref href='/admin/users'>
-            <BreadcrumbLink>Users</BreadcrumbLink>
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem isCurrentPage>
-          <Link passHref href={`/admin/users/${data.id}`}>
-            <BreadcrumbLink>{data.username}</BreadcrumbLink>
-          </Link>
-        </BreadcrumbItem>
-      </Breadcrumb>
+    <AdminLayout breadcrumbs={[
+      { href: '/admin/users', label: 'Users' },
+      { href: `/admin/users/${data.id}`, label: data.username }
+    ]}
+    >
       <Container>
         <Heading>{data.username}</Heading>
         <pre><Code>{JSON.stringify(data, null, 2)}</Code></pre>
