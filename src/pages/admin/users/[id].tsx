@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import Error from '../../../components/Error'
-import SidebarWithHeader from '../../../components/layouts/SidebarWithHeader'
+import AdminLayout from '../../../components/layouts/AdminLayout'
 import { UserWithId } from '../../../schemas/db'
 
 const fetcher = async (url: string): Promise<UserWithId> => await fetch(url).then(async (res) => await res.json())
@@ -21,7 +21,7 @@ const UserView: NextPage = () => {
   if (data == null) return <>Loading...</>
 
   return (
-    <SidebarWithHeader>
+    <AdminLayout>
       <Breadcrumb>
         <BreadcrumbItem>
           <Link passHref href='/admin/users'>
@@ -38,7 +38,7 @@ const UserView: NextPage = () => {
         <Heading>{data.username}</Heading>
         <pre><Code>{JSON.stringify(data, null, 2)}</Code></pre>
       </Container>
-    </SidebarWithHeader>
+    </AdminLayout>
   )
 }
 

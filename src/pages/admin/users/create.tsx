@@ -9,15 +9,21 @@ import {
   Container,
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink
+  BreadcrumbLink,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+  CloseButton
 } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import fetch from 'cross-fetch'
-import SidebarWithHeader from '../../../components/layouts/SidebarWithHeader'
 import { User, userSchema } from '../../../schemas/db'
 import Link from 'next/link'
+import AdminLayout from '../../../components/layouts/AdminLayout'
+import { useState } from 'react'
 
 const UsersCreate: NextPage = () => {
   const {
@@ -29,9 +35,12 @@ const UsersCreate: NextPage = () => {
     resolver: yupResolver(userSchema)
   })
 
+  const [showUnknownError, setShowUnknownError] = useState(false)
+
   const router = useRouter()
 
   const onSubmit = async (values: User): Promise<void> => {
+    setShowUnknownError(false)
     const res = await fetch('/api/admin/users', {
       method: 'POST',
       headers: {
@@ -49,14 +58,10 @@ const UsersCreate: NextPage = () => {
             setError(key as keyof User, value)
           }
         } else {
-          // Unknown error
-          // TODO
-          throw Error('UNKNOWN ERROR')
+          setShowUnknownError(true)
         }
       } else {
-        // Unknown error
-        // TODO
-        throw Error('UNKNOWN ERROR')
+        setShowUnknownError(true)
       }
       return
     }
@@ -67,7 +72,7 @@ const UsersCreate: NextPage = () => {
   }
 
   return (
-    <SidebarWithHeader>
+    <AdminLayout>
 
       <Breadcrumb>
         <BreadcrumbItem>
@@ -81,6 +86,13 @@ const UsersCreate: NextPage = () => {
           </Link>
         </BreadcrumbItem>
       </Breadcrumb>
+
+      <Alert status='error' mt={5} mb={5} hidden={!showUnknownError}>
+        <AlertIcon />
+        <AlertTitle mr={2}>An unknown error has occured.</AlertTitle>
+        <AlertDescription>Please try again later.</AlertDescription>
+        <CloseButton position='absolute' right='8px' top='8px' onClick={() => setShowUnknownError(false)} />
+      </Alert>
 
       <Container>
         <Heading>Create new user</Heading>
@@ -117,7 +129,7 @@ const UsersCreate: NextPage = () => {
 
         </form>
       </Container>
-    </SidebarWithHeader>
+    </AdminLayout>
   )
 }
 

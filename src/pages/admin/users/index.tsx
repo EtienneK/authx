@@ -13,13 +13,13 @@ import {
 import type { NextPage } from 'next'
 import useSWR from 'swr'
 import fetch from 'cross-fetch'
-import SidebarWithHeader from '../../../components/layouts/SidebarWithHeader'
 import Link from '../../../components/layouts/Link'
 import { FiPlusCircle } from 'react-icons/fi'
 import React, { ReactElement } from 'react'
 import Error from '../../../components/Error'
 import { ListPayload } from '../../../adapters'
 import { UserWithId } from '../../../schemas/db'
+import AdminLayout from '../../../components/layouts/AdminLayout'
 
 const fetcher = async (url: string): Promise<ListPayload<UserWithId>> => await fetch(url).then(async (res) => await res.json())
 
@@ -78,7 +78,7 @@ const DataFetchDisplay = (
 
 const UsersList: NextPage = () => {
   return (
-    <SidebarWithHeader>
+    <AdminLayout>
       <NextLink href='/admin/users/create'>
         <Button leftIcon={<FiPlusCircle />} float='right'>
           Create new user
@@ -86,7 +86,7 @@ const UsersList: NextPage = () => {
       </NextLink>
       <Heading>Users</Heading>
       <DataFetchDisplay url='/api/admin/users' DisplayElement={DataTable} />
-    </SidebarWithHeader>
+    </AdminLayout>
   )
 }
 
