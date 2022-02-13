@@ -1,6 +1,6 @@
 import { DataTypes, ModelStatic, Options, Sequelize, Transaction } from 'sequelize'
 import { Adapters, CrudAdapter, FindPayload, ListPayload, OidcAdapter, UserAdapter } from '..'
-import { UserWithId } from '../../schemas/db'
+import { UserWithId } from '../../schemas/shared/admin'
 
 const enableSqlLogging = process.env.DATABASE_LOGGING_ENABLED ?? 'false'
 

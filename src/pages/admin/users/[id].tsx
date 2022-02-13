@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import Error from '../../../components/Error'
 import AdminLayout from '../../../components/layouts/AdminLayout'
-import { UserWithId } from '../../../schemas/db'
+import { UserWithId } from '../../../schemas/shared/admin'
 
 const fetcher = async (url: string): Promise<UserWithId> => await fetch(url).then(async (res) => await res.json())
 
@@ -27,7 +27,9 @@ const UserView: NextPage = () => {
     >
       <Container>
         <Heading>{data.username}</Heading>
-        <pre style={{ overflow: 'scroll' }}><Code>{JSON.stringify(data, null, 2)}</Code></pre>
+        <Code whiteSpace='pre' display='block' mt={5}>
+          {JSON.stringify(data, null, 2)}
+        </Code>
       </Container>
     </AdminLayout>
   )

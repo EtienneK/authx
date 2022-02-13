@@ -17,7 +17,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import fetch from 'cross-fetch'
-import { User, userSchema } from '../../../schemas/db'
+import { User, userSchema } from '../../../schemas/shared/admin'
 import AdminLayout from '../../../components/layouts/AdminLayout'
 import { useState } from 'react'
 

@@ -18,7 +18,7 @@ import { FiPlusCircle } from 'react-icons/fi'
 import React, { ReactElement } from 'react'
 import Error from '../../../components/Error'
 import { ListPayload } from '../../../adapters'
-import { UserWithId } from '../../../schemas/db'
+import { UserWithId } from '../../../schemas/shared/admin'
 import AdminLayout from '../../../components/layouts/AdminLayout'
 
 const fetcher = async (url: string): Promise<ListPayload<UserWithId>> => await fetch(url).then(async (res) => await res.json())

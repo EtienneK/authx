@@ -1,4 +1,4 @@
-import { UserWithId } from '../schemas/db'
+import { UserWithId } from '../schemas/shared/admin'
 import SequelizeAdapterFactory from './sequelize'
 
 export interface FindPayload {
