@@ -1,3 +1,5 @@
+import { promisify } from 'util'
+import { randomBytes, pbkdf2 } from 'crypto'
 import nc from 'next-connect'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { nanoid } from 'nanoid'
@@ -5,6 +7,22 @@ import { userSchema } from '../../../../schemas/db'
 import adapters from '../../../../adapters'
 import { validate } from '../../../../middlewares/validate'
 import { object } from 'yup'
+
+const randomBytesAsync = promisify(randomBytes)
+const pbkdf2Async = promisify(pbkdf2)
+async function hashPassword (password: string): Promise<string> {
+  const params = {
+    saltLength: 16,
+    iterations: 10000,
+    keylen: 64,
+    digest: 'sha512'
+  }
+
+  const { saltLength, iterations, keylen, digest } = params
+  const salt = await randomBytesAsync(saltLength)
+  const hash = await pbkdf2Async(password, salt, iterations, keylen, digest)
+  return `${salt.toString('base64')}:${hash.toString('base64')}`
+}
 
 const serverUserSchema = object({
   email: userSchema.fields.email.test(
@@ -37,7 +55,11 @@ const handler = nc<NextApiRequest, NextApiResponse>()
     req.body.email = email
 
     const id = nanoid()
-    await adapters.users().upsert(id, req.body)
+
+    await adapters.users().upsert(id, {
+      ...req.body,
+      password: await hashPassword(req.body.password)
+    })
 
     res.status(201).json({ id })
   }))

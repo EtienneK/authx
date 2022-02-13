@@ -7,8 +7,11 @@ export interface WithId {
 // User
 
 export const userSchema = object({
-  email: string().required().email(),
-  username: string().required()
+  email: string().required().email().max(255),
+  username: string().required().min(1).max(16)
+    .matches(/^[a-zA-Z]+.*$/, 'username must start with a letter')
+    .matches(/^[a-zA-Z0-9]+$/, 'username may only contain alphanumeric characters'),
+  password: string().required().min(8)
 })
 
 export interface User extends InferType<typeof userSchema> {}

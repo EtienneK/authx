@@ -9,6 +9,7 @@ const handler = nc<NextApiRequest, NextApiResponse>()
     const { id } = req.query
     const found = await adapters.users().find(id as string)
     if (found == null) return res.status(404).end()
+    found.password = '********'
     res.status(200).json(found)
   })
   .put(validate(userSchema, async (req, res) => {

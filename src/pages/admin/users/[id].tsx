@@ -27,7 +27,7 @@ const UserView: NextPage = () => {
     >
       <Container>
         <Heading>{data.username}</Heading>
-        <pre><Code>{JSON.stringify(data, null, 2)}</Code></pre>
+        <pre style={{ overflow: 'scroll' }}><Code>{JSON.stringify(data, null, 2)}</Code></pre>
       </Container>
     </AdminLayout>
   )

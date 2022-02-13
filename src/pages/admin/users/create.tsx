@@ -109,6 +109,19 @@ const UsersCreate: NextPage = () => {
             </FormErrorMessage>
           </FormControl>
 
+          <FormControl isInvalid={errors.password != null}>
+            <FormLabel htmlFor='email'>Password</FormLabel>
+            <Input
+              id='password'
+              placeholder='Password'
+              type='password'
+              {...register('password')}
+            />
+            <FormErrorMessage>
+              {errors?.password?.message}
+            </FormErrorMessage>
+          </FormControl>
+
           <Button mt={4} isLoading={isSubmitting} type='submit'>
             Create
           </Button>
