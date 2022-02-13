@@ -11,23 +11,24 @@ import {
   Button
 } from '@chakra-ui/react'
 import type { NextPage } from 'next'
-import useSWR from 'swr'
-import fetch from 'cross-fetch'
 import Link from '../../../components/layouts/Link'
 import { FiPlusCircle } from 'react-icons/fi'
-import React, { ReactElement } from 'react'
-import Error from '../../../components/Error'
 import { ListPayload } from '../../../adapters'
 import { UserWithId } from '../../../schemas/shared/admin'
 import AdminLayout from '../../../components/layouts/AdminLayout'
+import DataFetchDisplay from '../../../components/DataFetchDisplay'
 
-const fetcher = async (url: string): Promise<ListPayload<UserWithId>> => await fetch(url).then(async (res) => await res.json())
-
-const DataTable = (
+const UserList = (
   { data }: { data: ListPayload<UserWithId> }
 ): React.ReactElement => {
   return (
     <>
+      <NextLink href='/admin/users/create'>
+        <Button leftIcon={<FiPlusCircle />} float='right'>
+          Create new user
+        </Button>
+      </NextLink>
+
       <Table variant='simple'>
         <Thead>
           <Tr>
@@ -60,32 +61,12 @@ const DataTable = (
   )
 }
 
-interface DisplayElementProps {
-  data: ListPayload<UserWithId>
-}
-
-const DataFetchDisplay = (
-  { url, DisplayElement }: { url: string, DisplayElement: React.ComponentType<DisplayElementProps>}
-): ReactElement => {
-  const { data, error } = useSWR(
-    url,
-    fetcher
-  )
-  if (error != null) return <Error heading='Failed to fetch users' message='An unkown error has occured. Please try again later.' />
-  if (data == null) return <>Loading...</>
-  return <DisplayElement data={data} />
-}
-
 const UsersList: NextPage = () => {
   return (
     <AdminLayout breadcrumbs={[]}>
-      <NextLink href='/admin/users/create'>
-        <Button leftIcon={<FiPlusCircle />} float='right'>
-          Create new user
-        </Button>
-      </NextLink>
+
       <Heading>Users</Heading>
-      <DataFetchDisplay url='/api/admin/users' DisplayElement={DataTable} />
+      <DataFetchDisplay url='/api/admin/users' DisplayElement={UserList} />
     </AdminLayout>
   )
 }
